@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "962585502126",
+    "project_id": "socialmedia-registerapp",
+    "storage_bucket": "socialmedia-registerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962585502126:android:1bf5fb26d45fa857f2683f",
+        "android_client_info": {
+          "package_name": "com.socialmediaregisterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962585502126-mghm5o5hnqmc399bck2frkivqsv9pssc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.socialmediaregisterapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "962585502126-pu4gn7vs8qnpemh7qj0pdnos33qtfi2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDROi8VbZNtNcPyy-ZvZJWyf3TBEFQUIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962585502126-pu4gn7vs8qnpemh7qj0pdnos33qtfi2o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
