@@ -45,7 +45,7 @@ function onGoogleButtonPress() {
     })
     .catch(error => console.log(error, 'Login Error'));
 }
-const App = props => {
+const App = () => {
   GoogleSignin.configure({
     webClientId:
       '962585502126-pu4gn7vs8qnpemh7qj0pdnos33qtfi2o.apps.googleusercontent.com',
