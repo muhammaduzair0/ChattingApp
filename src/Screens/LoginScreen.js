@@ -48,7 +48,8 @@ function onGoogleButtonPress() {
     .catch(error => console.log(error, 'Login Error'));
 }
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
+ 
   GoogleSignin.configure({
     webClientId:
       '962585502126-pu4gn7vs8qnpemh7qj0pdnos33qtfi2o.apps.googleusercontent.com',
@@ -75,10 +76,14 @@ const LoginScreen = () => {
                   uid: e.user.uid,
                   imageUrl: e.user.photoURL,
                 };
-                console.log(obj);
                 return firebaseUserData(obj);
               })
-              .then(e => console.log(e))
+              .then(e => {
+                const userDetails = {...obj}
+                console.log(userDetails)
+                return userDetails
+                
+          })
               .catch(error => console.log(error));
           }}>
           <Text style={{color: 'white', fontWeight: '700'}}>GOOGLE LOGIN</Text>

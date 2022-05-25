@@ -1,8 +1,19 @@
-import {createStore} from 'redux'
-import AccountReducer from './Reducer/Account'
+import {createStore, combineReducers} from 'redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import accountReducer from './Reducer/Account';
 
-const rootReducer = (state,action) =>{
-    return AccountReducer(state,action)
-}
+const AccountReducerPersist = {
+  key: 'accountreducer',
+  storage: AsyncStorage,
+  whitelist: ['user'],
+};
 
-export const store = createStore(rootReducer)
+const combinedReducers = combineReducers({
+  accountReducer: persistReducer(AccountReducerPersist, accountReducer),
+});
+
+const store = createStore(combinedReducers);
+
+const peristStore = persistStore(store);
+
+export {store, peristStore};
