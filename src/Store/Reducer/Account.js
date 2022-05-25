@@ -5,13 +5,12 @@ const initialState = {
 const accountReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return {
+    return {
         ...state,
         user: action.payload,
       };
-      break;
     default: {
-      state;
+      return state;
     }
   }
 };

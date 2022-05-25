@@ -1,6 +1,7 @@
-import {createStore, combineReducers} from 'redux';
+import {legacy_createStore as createStore, combineReducers} from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import accountReducer from './Reducer/Account';
+import {persistStore, persistReducer} from 'redux-persist';
 
 const AccountReducerPersist = {
   key: 'accountreducer',

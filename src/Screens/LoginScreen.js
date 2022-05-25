@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -49,7 +50,8 @@ function onGoogleButtonPress() {
 }
 
 const LoginScreen = ({navigation}) => {
- 
+  const user = useSelector((state) => state.user)
+  const dispatch = useDispatch()
   GoogleSignin.configure({
     webClientId:
       '962585502126-pu4gn7vs8qnpemh7qj0pdnos33qtfi2o.apps.googleusercontent.com',
@@ -80,9 +82,10 @@ const LoginScreen = ({navigation}) => {
               })
               .then(e => {
                 const userDetails = {...obj}
-                console.log(userDetails)
-                return userDetails
-                
+                dispatch({
+                  type: "SET_USER",
+                  payload: userDetails
+                })       
           })
               .catch(error => console.log(error));
           }}>
