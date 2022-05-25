@@ -17,7 +17,13 @@ const UserScreen = () => {
   return (
     <ScrollView>
       <View style={{marginTop: 20}}>
-        <Text style={{color: 'black', fontSize: 22, textAlign: 'center'}}>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 22,
+            fontWeight: '600',
+            textAlign: 'center',
+          }}>
           Active Users
         </Text>
       </View>
@@ -39,7 +45,7 @@ const UserScreen = () => {
                 />
               </View>
               <View style={{marginLeft: 10, justifyContent: 'center'}}>
-                <Text>{data.name}</Text>
+                <Text style={{fontSize: 16}}>{data.name}</Text>
               </View>
             </TouchableOpacity>
           </View>
