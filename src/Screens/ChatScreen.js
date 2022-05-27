@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {getUserData} from '../Utility/firebaseUtility';
 
-const UserScreen = () => {
+const ChatScreen = () => {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -27,9 +27,10 @@ const UserScreen = () => {
           Active Users
         </Text>
       </View>
-      {userData.map(data => {
+      {userData.map((data, index) => {
         return (
           <View
+            key={index}
             style={{
               marginHorizontal: 20,
             }}>
@@ -55,4 +56,4 @@ const UserScreen = () => {
   );
 };
 
-export default UserScreen;
+export default ChatScreen;

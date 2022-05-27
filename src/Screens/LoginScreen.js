@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -50,8 +50,8 @@ function onGoogleButtonPress() {
 }
 
 const LoginScreen = ({navigation}) => {
-  const user = useSelector((state) => state.user)
-  const dispatch = useDispatch()
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
   GoogleSignin.configure({
     webClientId:
       '962585502126-pu4gn7vs8qnpemh7qj0pdnos33qtfi2o.apps.googleusercontent.com',
@@ -81,12 +81,13 @@ const LoginScreen = ({navigation}) => {
                 return firebaseUserData(obj);
               })
               .then(e => {
-                const userDetails = {...obj}
+                const userDetails = {...obj};
                 dispatch({
-                  type: "SET_USER",
-                  payload: userDetails
-                })       
-          })
+                  type: 'SET_USER',
+                  payload: userDetails,
+                });
+                navigation.navigate('ChatScreen');
+              })
               .catch(error => console.log(error));
           }}>
           <Text style={{color: 'white', fontWeight: '700'}}>GOOGLE LOGIN</Text>
@@ -113,7 +114,14 @@ const LoginScreen = ({navigation}) => {
                 console.log(obj);
                 return firebaseUserData(obj);
               })
-              .then(e => console.log(e))
+              .then(e => {
+                const userDetails = {...obj};
+                dispatch({
+                  type: 'SET_USER',
+                  payload: userDetails,
+                });
+                navigation.navigate('ChatScreen');
+              })
               .catch(error => console.log(error));
           }}>
           <Text style={{color: 'white', fontWeight: '700'}}>
