@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {getUserData} from '../Utility/firebaseUtility';
 
-const ChatScreen = () => {
+const ChatScreen = ({navigation}) => {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -35,6 +35,11 @@ const ChatScreen = () => {
               marginHorizontal: 20,
             }}>
             <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('ConversationScreen',{
+                id: data.uid
+              })
+            }}
               style={{
                 flexDirection: 'row',
                 marginVertical: 20,
