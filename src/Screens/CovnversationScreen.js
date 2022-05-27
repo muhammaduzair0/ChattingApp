@@ -1,25 +1,25 @@
 import React, {useEffect, useState} from 'react';
+import { useSelector } from 'react-redux';
 import {View, Text, TextInput} from 'react-native';
-import {getThread} from '../Utility/firebaseUtility';
+import {checkThread} from '../Utility/firebaseUtility';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 const ConversationScreen = ({route}) => {
     const [messages, setMessages] = useState([])
-    const id = route.params
+    const gfc = route.params?.data
+    const user =useSelector(state => state.accountReducer.user)
+    console.log(gfc)
     useEffect(() => {
-        getThread().then((e)=> {
-            console.log(e)
-        })
+        // checkThread().then(e =>{   
+        //     console.log(e)
+        // })
     }, [])
   useEffect(() => {
     setMessages([
         {
-        _id: id,
         text: 'Hello',
         createdAt: new Date(),
-        user:{
-            _id: id
-        }
+       
         }
     ])
   }, []);

@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {firebaseUserData} from '../Utility/firebaseUtility';
+import {firebaseUserData, searchData} from '../Utility/firebaseUtility';
 
 // FACEBOOK LOGIN FUNCTION
 function onFacebookButtonPress() {
@@ -50,7 +50,7 @@ function onGoogleButtonPress() {
 }
 
 const LoginScreen = ({navigation}) => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.accountReducer);
   const dispatch = useDispatch();
   GoogleSignin.configure({
     webClientId:
@@ -78,13 +78,24 @@ const LoginScreen = ({navigation}) => {
                   uid: e.user.uid,
                   imageUrl: e.user.photoURL,
                 };
-                return firebaseUserData(obj);
+                return searchData(e.user.uid);
               })
               .then(e => {
-                const userDetails = {...obj};
+                if (e.docs.length > 0) {
+                  dispatch({
+                    type: 'SET_USER',
+                    payload: obj,
+                  });
+                  navigation.navigate('ChatScreen');
+                } else {
+                  console.log(obj);
+                  return firebaseUserData(obj);
+                }
+              })
+              .then(e => {
                 dispatch({
                   type: 'SET_USER',
-                  payload: userDetails,
+                  payload: obj,
                 });
                 navigation.navigate('ChatScreen');
               })
@@ -111,14 +122,23 @@ const LoginScreen = ({navigation}) => {
                   uid: e.user.uid,
                   imageUrl: e.user.photoURL,
                 };
-                console.log(obj);
-                return firebaseUserData(obj);
+                return searchData(e.user.uid);
               })
               .then(e => {
-                const userDetails = {...obj};
+                if (e.docs.length > 0) {
+                  dispatch({
+                    type: 'SET_USER',
+                    payload: obj,
+                  });
+                  navigation.navigate('ChatScreen');
+                } else {
+                  return firebaseUserData(obj);
+                }
+              })
+              .then(e => {
                 dispatch({
                   type: 'SET_USER',
-                  payload: userDetails,
+                  payload: obj,
                 });
                 navigation.navigate('ChatScreen');
               })

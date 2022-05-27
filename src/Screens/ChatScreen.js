@@ -37,7 +37,7 @@ const ChatScreen = ({navigation}) => {
             <TouchableOpacity
             onPress={() => {
               navigation.navigate('ConversationScreen',{
-                id: data.uid
+                data: data
               })
             }}
               style={{
