@@ -13,14 +13,13 @@ const ConversationScreen = ({route}) => {
   const guestData = route.params?.data;
 
   const user = useSelector(state => state.accountReducer.user);
-  const getMessages = useSelector(state => state.messageReducer.message);
+  const messagesState = useSelector(state => state.messageReducer.message);
   const dispatch = useDispatch();
   useEffect(() => {
     checkThread(user, guestData).then(e => {
       setUserThread(e);
     });
   }, []);
-  console.log(getMessages, 'GET ');
   useEffect(() => {
     if (userThread !== null) {
       getMessage(userThread.id).then(e => {
@@ -49,9 +48,9 @@ const ConversationScreen = ({route}) => {
 
   useEffect(() => {
     if (userThread) {
-      if (getMessages.length > 0) {
-        let index = getMessages.length - 1;
-        let createdAt = getMessages[index].createdAt;
+      if (messagesState.length > 0) {
+        let index = messagesState.length - 1;
+        let createdAt = messagesState[index].createdAt;
         getMessageListener(userThread.id, createdAt, userMessage);
       } else {
         let newDate = moment().utc().valueOf();
@@ -78,7 +77,7 @@ const ConversationScreen = ({route}) => {
 
   return (
     <GiftedChat
-      messages={getMessages}
+      messages={messagesState}
       onSend={messages => onSend(messages)}
       user={{
         _id: user.uid,
