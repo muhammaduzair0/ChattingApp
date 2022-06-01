@@ -37,10 +37,6 @@ const ConversationScreen = ({route}) => {
     }
   }, [userThread]);
 
-  const setMessageCallBack = newMessage => {
-    console.log(messages)
-    setMessages([...messages, newMessage]);
-  };
   useEffect(() => {
     if (userThread) {
       if (messages.length > 0) {
@@ -49,13 +45,13 @@ const ConversationScreen = ({route}) => {
         console.log(index);
         let createdAt = messages[index].createdAt;
         console.log(createdAt);
-        getMessageListener(userThread.id, createdAt, setMessageCallBack);
+        getMessageListener(userThread.id, createdAt, setMessages, messages);
       } else {
         let newDate = moment().utc().valueOf();
-        getMessageListener(userThread.id, newDate, setMessageCallBack);
+        getMessageListener(userThread.id, newDate, setMessages, messages);
       }
     }
-  }, [userThread]);
+  }, [userThread, messages]);
   // useEffect(() => {
   //   setMessages([
   //     {
@@ -97,7 +93,11 @@ const ConversationScreen = ({route}) => {
   };
 
   const renderMessages = message => {
-    return message?.sort((a, b) => b.createdAt - a.createdAt);
+    if (message.length > 0) {
+      return message?.sort((a, b) => {
+        b.createdAt - a.createdAt;
+      });
+    }
   };
   return (
     <GiftedChat
@@ -106,7 +106,6 @@ const ConversationScreen = ({route}) => {
       user={{
         _id: user.uid,
       }}
-      
     />
   );
 };

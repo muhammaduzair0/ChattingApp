@@ -34,7 +34,7 @@ export async function getMessage(id) {
     .get();
 }
 
-export function getMessageListener(id, createdAt, setMessage) {
+export function getMessageListener(id, createdAt, setMessages, messages) {
   firestore()
     .collection('Threads')
     .doc(id)
@@ -47,7 +47,7 @@ export function getMessageListener(id, createdAt, setMessage) {
           ...e.data(),
           _id: e.id,
         };
-        setMessage(newObj);
+        setMessages([...messages, newObj])
         // setMessages([...messages, e.data()]);
       });
     });
