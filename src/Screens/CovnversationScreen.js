@@ -8,7 +8,7 @@ import {
 } from '../Utility/firebaseUtility';
 import {GiftedChat} from 'react-native-gifted-chat';
 import moment from 'moment';
-
+import {Text, TouchableOpacity} from 'react-native';
 const ConversationScreen = ({route}) => {
   const [messages, setMessages] = useState([]);
   const [userThread, setUserThread] = useState(null);
@@ -28,6 +28,7 @@ const ConversationScreen = ({route}) => {
         e.docs.forEach(ele => {
           const messageObj = {
             ...ele.data(),
+            _id: ele.id,
           };
           element.push(messageObj);
         });
@@ -36,20 +37,25 @@ const ConversationScreen = ({route}) => {
     }
   }, [userThread]);
 
+  const setMessageCallBack = newMessage => {
+    console.log(messages)
+    setMessages([...messages, newMessage]);
+  };
   useEffect(() => {
     if (userThread) {
       if (messages.length > 0) {
         console.log(messages);
         let index = messages.length - 1;
+        console.log(index);
         let createdAt = messages[index].createdAt;
-
-        getMessageListener(userThread.id, createdAt, setMessages);
+        console.log(createdAt);
+        getMessageListener(userThread.id, createdAt, setMessageCallBack);
       } else {
         let newDate = moment().utc().valueOf();
-        getMessageListener(userThread.id, newDate, setMessages);
+        getMessageListener(userThread.id, newDate, setMessageCallBack);
       }
     }
-  }, [userThread, messages]);
+  }, [userThread]);
   // useEffect(() => {
   //   setMessages([
   //     {
@@ -89,13 +95,18 @@ const ConversationScreen = ({route}) => {
       console.log(e);
     });
   };
+
+  const renderMessages = message => {
+    return message?.sort((a, b) => b.createdAt - a.createdAt);
+  };
   return (
     <GiftedChat
-      messages={messages}
+      messages={renderMessages(messages)}
       onSend={messages => onSend(messages)}
       user={{
         _id: user.uid,
       }}
+      
     />
   );
 };
