@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {
   checkThread,
   sendMessage,
@@ -8,19 +8,19 @@ import {
 } from '../Utility/firebaseUtility';
 import {GiftedChat} from 'react-native-gifted-chat';
 import moment from 'moment';
-import {Text, TouchableOpacity} from 'react-native';
 const ConversationScreen = ({route}) => {
-  const [messages, setMessages] = useState([]);
   const [userThread, setUserThread] = useState(null);
   const guestData = route.params?.data;
 
   const user = useSelector(state => state.accountReducer.user);
+  const getMessages = useSelector(state => state.messageReducer.message);
+  const dispatch = useDispatch();
   useEffect(() => {
     checkThread(user, guestData).then(e => {
       setUserThread(e);
     });
   }, []);
-
+  console.log(getMessages, 'GET ');
   useEffect(() => {
     if (userThread !== null) {
       getMessage(userThread.id).then(e => {
@@ -32,50 +32,34 @@ const ConversationScreen = ({route}) => {
           };
           element.push(messageObj);
         });
-        setMessages(element);
+        dispatch({
+          type: 'SET_MESSAGES',
+          payload: element,
+        });
       });
     }
   }, [userThread]);
 
+  const userMessage = msg => {
+    dispatch({
+      type: 'SET_MESSAGES',
+      payload: [msg],
+    });
+  };
+
   useEffect(() => {
     if (userThread) {
-      if (messages.length > 0) {
-        console.log(messages);
-        let index = messages.length - 1;
-        console.log(index);
-        let createdAt = messages[index].createdAt;
-        console.log(createdAt);
-        getMessageListener(userThread.id, createdAt, setMessages, messages);
+      if (getMessages.length > 0) {
+        let index = getMessages.length - 1;
+        let createdAt = getMessages[index].createdAt;
+        getMessageListener(userThread.id, createdAt, userMessage);
       } else {
         let newDate = moment().utc().valueOf();
-        getMessageListener(userThread.id, newDate, setMessages, messages);
+        getMessageListener(userThread.id, newDate, userMessage);
       }
     }
-  }, [userThread, messages]);
-  // useEffect(() => {
-  //   setMessages([
-  //     {
-  //       _id: 1,
-  //       text: 'Hello developer',
-  //       createdAt: new Date(),
-  //       user: {
-  //         _id: 2,
-  //         name: 'React Native',
-  //         avatar: 'https://placeimg.com/140/140/any',
-  //       },
-  //     },
-  //     {
-  //       _id: 1,
-  //       text: 'Hello',
-  //       createdAt: new Date(),
-  //       user: {
-  //         _id: 1,
-  //         name: 'React Native',
-  //         avatar: 'https://placeimg.com/140/140/any',
-  //       },
-  //     },
-  //   ]);
-  // }, []);
+  }, [userThread]);
+
   const onSend = message => {
     const obj = {
       _id: message[0]._id,
@@ -92,16 +76,9 @@ const ConversationScreen = ({route}) => {
     });
   };
 
-  const renderMessages = message => {
-    if (message.length > 0) {
-      return message?.sort((a, b) => {
-        b.createdAt - a.createdAt;
-      });
-    }
-  };
   return (
     <GiftedChat
-      messages={renderMessages(messages)}
+      messages={getMessages}
       onSend={messages => onSend(messages)}
       user={{
         _id: user.uid,

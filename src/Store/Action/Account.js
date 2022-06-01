@@ -4,3 +4,10 @@ export const setUserData = payload => {
     payload: payload,
   };
 };
+
+export const setUserMessage = payload => {
+  return {
+    type: 'SET_MESSAGES',
+    payload: payload
+  }
+}
