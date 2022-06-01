@@ -30,7 +30,23 @@ export async function getMessage(id) {
     .collection('Threads')
     .doc(id)
     .collection('Message')
+    .orderBy('asc')
     .get();
+}
+
+export function getMessageListener(id, createdAt, setMessages) {
+  firestore()
+    .collection('Threads')
+    .doc(id)
+    .collection('Message')
+    .where('createdAt', '>', createdAt)
+    .orderBy('asc')
+    .onSnapshot(data => {
+      data.docs.forEach(e => {
+        console.log(e.data())
+        setMessages(e.data());
+      });
+    });
 }
 
 export async function getThread(id, guestId) {

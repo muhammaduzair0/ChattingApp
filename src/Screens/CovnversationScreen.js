@@ -1,7 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {checkThread, sendMessage, getMessage} from '../Utility/firebaseUtility';
+import {
+  checkThread,
+  sendMessage,
+  getMessage,
+  getMessageListener,
+} from '../Utility/firebaseUtility';
 import {GiftedChat} from 'react-native-gifted-chat';
+import moment from 'moment';
 
 const ConversationScreen = ({route}) => {
   const [messages, setMessages] = useState([]);
@@ -20,15 +26,27 @@ const ConversationScreen = ({route}) => {
       getMessage(userThread.id).then(e => {
         let element = [];
         e.docs.forEach(ele => {
-          const messageObj ={
-            ...ele.data()
-          }
+          const messageObj = {
+            ...ele.data(),
+          };
           element.push(messageObj);
         });
         setMessages(element);
       });
     }
   }, [userThread]);
+
+  useEffect(() => {
+    if (messages.length < 1) {
+      let newDate = moment().utc().valueOf();
+      getMessageListener(userThread.id, newDate, setMessages);
+    } else {
+      let index = messages.length - 1;
+      let createdAt = messages[index].createdAt;
+
+      getMessageListener(userThread.id, createdAt, setMessages);
+    } 
+  }, [messages]);
   // useEffect(() => {
   //   setMessages([
   //     {
@@ -57,7 +75,7 @@ const ConversationScreen = ({route}) => {
     const obj = {
       _id: message[0]._id,
       text: message[0].text,
-      createdAt: new Date(),
+      createdAt: moment().utc().valueOf(),
       user: {
         _id: user.uid,
         name: user.name,
