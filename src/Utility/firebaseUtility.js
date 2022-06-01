@@ -30,7 +30,7 @@ export async function getMessage(id) {
     .collection('Threads')
     .doc(id)
     .collection('Message')
-    .orderBy('asc')
+    .orderBy('createdAt', 'asc')
     .get();
 }
 
@@ -40,10 +40,10 @@ export function getMessageListener(id, createdAt, setMessages) {
     .doc(id)
     .collection('Message')
     .where('createdAt', '>', createdAt)
-    .orderBy('asc')
+    .orderBy('createdAt', 'asc')
     .onSnapshot(data => {
       data.docs.forEach(e => {
-        console.log(e.data())
+        console.log(e.data());
         setMessages(e.data());
       });
     });

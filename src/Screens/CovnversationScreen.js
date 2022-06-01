@@ -37,16 +37,19 @@ const ConversationScreen = ({route}) => {
   }, [userThread]);
 
   useEffect(() => {
-    if (messages.length < 1) {
-      let newDate = moment().utc().valueOf();
-      getMessageListener(userThread.id, newDate, setMessages);
-    } else {
-      let index = messages.length - 1;
-      let createdAt = messages[index].createdAt;
+    if (userThread) {
+      if (messages.length > 0) {
+        console.log(messages);
+        let index = messages.length - 1;
+        let createdAt = messages[index].createdAt;
 
-      getMessageListener(userThread.id, createdAt, setMessages);
-    } 
-  }, [messages]);
+        getMessageListener(userThread.id, createdAt, setMessages);
+      } else {
+        let newDate = moment().utc().valueOf();
+        getMessageListener(userThread.id, newDate, setMessages);
+      }
+    }
+  }, [userThread, messages]);
   // useEffect(() => {
   //   setMessages([
   //     {
