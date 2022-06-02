@@ -48,15 +48,13 @@ const ConversationScreen = ({route}) => {
 
   useEffect(() => {
     if (userThread) {
-      if (messagesState.length > 0) {
-        let index = messagesState.length - 1;
-        let createdAt = messagesState[index].createdAt;
-        getMessageListener(userThread.id, createdAt, userMessage);
-      } else {
-        let newDate = moment().utc().valueOf();
-        getMessageListener(userThread.id, newDate, userMessage);
-      }
+      // if (messagesState.length > 0) {
+      // let index = messagesState.length - 1;
+      // let createdAt = messagesState[index].createdAt;
+      let createdAt = moment().utc().valueOf();
+      getMessageListener(userThread.id, createdAt, userMessage);
     }
+    // }
   }, [userThread]);
 
   const onSend = message => {
@@ -70,6 +68,7 @@ const ConversationScreen = ({route}) => {
         avatar: user.imageUrl,
       },
     };
+    console.log(obj);
     sendMessage(userThread.id, obj).then(e => {
       console.log(e);
     });

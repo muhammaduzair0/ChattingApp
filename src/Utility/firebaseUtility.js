@@ -26,6 +26,7 @@ export async function sendMessage(id, message) {
 }
 
 export async function getMessage(id) {
+  console.log(id)
   return await firestore()
     .collection('Threads')
     .doc(id)
@@ -34,11 +35,7 @@ export async function getMessage(id) {
     .get();
 }
 
-export function getMessageListener(
-  id,
-  createdAt,
-  userMessage,
-) {
+export function getMessageListener(id, createdAt, userMessage) {
   firestore()
     .collection('Threads')
     .doc(id)
