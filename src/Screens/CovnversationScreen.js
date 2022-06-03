@@ -14,6 +14,7 @@ const ConversationScreen = ({route}) => {
 
   const user = useSelector(state => state.accountReducer.user);
   const messagesState = useSelector(state => state.messageReducer.message);
+  console.log(messagesState)
   const dispatch = useDispatch();
   useEffect(() => {
     checkThread(user, guestData).then(e => {

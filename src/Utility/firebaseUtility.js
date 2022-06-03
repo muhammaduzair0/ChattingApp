@@ -26,7 +26,6 @@ export async function sendMessage(id, message) {
 }
 
 export async function getMessage(id) {
-  console.log(id)
   return await firestore()
     .collection('Threads')
     .doc(id)
@@ -44,6 +43,7 @@ export function getMessageListener(id, createdAt, userMessage) {
     .orderBy('createdAt', 'asc')
     .onSnapshot(data => {
       data.docs.forEach(e => {
+        if (e.data() == null) return
         const newObj = {
           ...e.data(),
           _id: e.id,
